@@ -2,3 +2,9 @@ lib/
 include/
 Makefile
 a
+
+# Vim swap and backup files
+*.swp
+*.swo
+*~
+*.un~
