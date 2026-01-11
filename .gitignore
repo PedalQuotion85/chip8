@@ -2,6 +2,9 @@ lib/
 include/
 Makefile
 a
+*.exe
+*.dll
+SDL3-devel-*/
 
 # Vim swap and backup files
 *.swp
