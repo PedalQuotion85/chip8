@@ -1,8 +1,11 @@
 lib/
 include/
 a
+chip8
 *.exe
 *.dll
+*.out
+*.bin
 SDL3-devel-*/
 
 # Vim swap and backup files

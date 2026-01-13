@@ -6,9 +6,9 @@
 
 typedef struct{
 
-	SDL_Window = 
+	SDL_Window *window; 
 
-}
+}sdl_t;
 
 bool init_SDL(void){
 
