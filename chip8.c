@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include <SDL3/SDL.h>
 
@@ -50,6 +51,9 @@ void chip8_cleanup(sdl_t *sdl){
 }
 
 bool init_config(config_t *config, int argc, char **argv){
+
+	bool height_flag = false;
+	bool width_flag = false;
 	
 	// If something somehow goes wrong
 	if(!config){
@@ -77,6 +81,31 @@ bool init_config(config_t *config, int argc, char **argv){
 		return false;
 	}
 
+	for(int i = 1; i < argc; i++){
+		if(strcmp(argv[i], "-h") == 0){
+			config->window_height = atoi(argv[i + 1]);
+			height_flag = true;
+		}
+		if(strcmp(argv[i], "-w") == 0){
+			config->window_width = atoi(argv[i + 1]);
+			width_flag = true;
+		}
+	}
+
+	// Ensures that no double of a flag is entered
+	if(height_flag == false || width_flag == false){
+		printf("Invalid Arguments!\n"
+			"Expected two arguments (any order): -h <height> -w <width>\n"
+			"Flags:\n"
+			"   -h   Set height of the display window\n"
+			"   -w   Set width of the display window\n"
+		        );
+		return false;
+	}
+
+	config->flags = 
+		SDL_WINDOW_OPENGL |
+		SDL_WINDOW_RESIZABLE;
 
 	return true;
 }
