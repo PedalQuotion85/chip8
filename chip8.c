@@ -29,7 +29,7 @@ bool init_SDL(sdl_t *sdl, const config_t *config){
 			"CHIP-8",			// window title
 			config->window_width,           // width, in pixels
 			config->window_height,          // height, in pixels
-			config->flags                  	// flags - see below
+			config->flags                  	// flags - see init_config function
 			);
 
 	// Check that the window was successfully created
@@ -49,13 +49,34 @@ void chip8_cleanup(sdl_t *sdl){
 
 }
 
-bool init_config(config_t *config){
+bool init_config(config_t *config, int argc, char **argv){
+	
+	// If something somehow goes wrong
+	if(!config){
+		printf("ERROR: Config Initialization Failure!");
+		return false;
+	}
+	
+	// If there are no additional args, we assume default config
+	if(argc == 1){
+		config->window_height = 480;
+		config->window_width = 840;	
+		config->flags = 
+			SDL_WINDOW_OPENGL |
+			SDL_WINDOW_RESIZABLE;
+		return true;
+	}
 
-	config->window_height = 480;
-	config->window_width = 840;	
-	config->flags = 
-		SDL_WINDOW_OPENGL |
-		SDL_WINDOW_RESIZABLE;
+	if(argc != 5){
+		printf("Invalid Arguments!\n"
+			"Expected two arguments (any order): -h <height> -w <width>\n"
+			"Flags:\n"
+			"   -h   Set height of the display window\n"
+			"   -w   Set width of the display window\n"
+			);
+		return false;
+	}
+
 
 	return true;
 }
@@ -67,17 +88,15 @@ void app(void){
 }
 
 int main(int argc, char **argv){
-	
-	// TODO: Add in a config override through command arg later.
-	(void)argc;
-	(void)argv;
-	
+
+
 	// Initialize Config
+
 	config_t config;
-	if(init_config(&config) == false){
+	if(init_config(&config, argc, argv) == false){
 		exit(EXIT_FAILURE);
 	}
-	
+
 	// Initialize SDL3
 	sdl_t sdl = {.window = NULL};
 	if(init_SDL(&sdl, &config) == false){

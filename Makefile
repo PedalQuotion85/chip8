@@ -11,7 +11,7 @@ ifeq ($(UNAME_S), Darwin)
 else
 	LIBS = .\SDL3-devel-3.4.0-mingw\SDL3-3.4.0\x86_64-w64-mingw32\lib
 	INCLUDES = -I.\SDL3-devel-3.4.0-mingw\SDL3-3.4.0\x86_64-w64-mingw32\include
-	LDFLAGS = -L$(LIBS) -lSDL3 -lmingw32 -mwindows
+	LDFLAGS = -L$(LIBS) -lSDL3 -lmingw32 #-mwindows
 	START = $(TARGET)
 endif
 
