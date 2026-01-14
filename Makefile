@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -std=c17 -Wall -Wextra
 
-UNAME_S := $(shell uname -s)
+UNAME_S := $(shell uname -s 2>/dev/null)
 
 ifeq ($(UNAME_S), Darwin)
 	# For macOS
@@ -25,4 +25,3 @@ $(TARGET): $(SRC)
 
 start: $(TARGET)
 	$(START)
-
