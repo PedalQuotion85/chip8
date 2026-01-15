@@ -18,6 +18,8 @@ typedef struct{
 	int window_height;	// Default value is 32 pixel
 	int window_width;	// Default value is 64 pixel
 	int scale;		// Default scale is 20x, so default res is 1280 x 640
+	uint32_t bg_color;
+	uint32_t fg_color;
 	SDL_WindowFlags flags;	// SDL window config flags
 }config_t;
 
