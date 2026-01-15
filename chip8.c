@@ -51,6 +51,7 @@ bool init_SDL(sdl_t *sdl, const config_t *config){
 }
 
 void chip8_cleanup(sdl_t *sdl){
+	SDL_DestroyRenderer(sdl->renderer);
 	SDL_DestroyWindow(sdl->window);
 	SDL_Quit(); // Exits SDL subsystem
 
@@ -134,12 +135,14 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}	
 
+	SDL_SetRenderDrawColor(sdl.renderer,r,g,b,a)
 	SDL_RenderClear(sdl.renderer);
 
 	bool done = false;
 
 	while (!done) {
 		SDL_Event event;
+		SDL_zero(event);
 
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_EVENT_QUIT) {
