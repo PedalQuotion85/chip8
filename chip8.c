@@ -15,10 +15,10 @@ typedef struct{
 
 typedef struct{
 	// NOTE: Change var type if there's issues between 32/64 systems.
-	int window_height;
-	int window_width;
-	int scale;
-	SDL_WindowFlags flags;
+	int window_height;	// Default value is 32 pixel
+	int window_width;	// Default value is 64 pixel
+	int scale;		// Default scale is 20x, so default res is 1280 x 640
+	SDL_WindowFlags flags;	// SDL window config flags
 }config_t;
 
 bool init_SDL(sdl_t *sdl, const config_t *config){
@@ -64,6 +64,12 @@ bool init_config(config_t *config, int argc, char **argv){
 	bool height_flag = false;
 	bool width_flag = false;
 
+	const char *err_msg = "Invalid Arguments!\n"
+		"Expected two arguments (any order): -h <height> -w <width>\n"
+		"Flags:\n"
+		"   -h   Set height of the display window\n"
+		"   -w   Set width of the display window\n";
+
 	// If something somehow goes wrong
 	if(!config){
 		printf("ERROR: Config Initialization Failure!");
@@ -84,12 +90,7 @@ bool init_config(config_t *config, int argc, char **argv){
 	}
 
 	if(argc != 5){
-		printf("Invalid Arguments!\n"
-				"Expected two arguments (any order): -h <height> -w <width>\n"
-				"Flags:\n"
-				"   -h   Set height of the display window\n"
-				"   -w   Set width of the display window\n"
-		      );
+		printf("%s", err_msg);
 		return false;
 	}
 
@@ -106,12 +107,7 @@ bool init_config(config_t *config, int argc, char **argv){
 
 	// Ensures that no double of a flag is entered
 	if(height_flag == false || width_flag == false){
-		printf("Invalid Arguments!\n"
-				"Expected two arguments (any order): -h <height> -w <width>\n"
-				"Flags:\n"
-				"   -h   Set height of the display window\n"
-				"   -w   Set width of the display window\n"
-		      );
+		printf("%s", err_msg);	
 		return false;
 	}
 
