@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <SDL3/SDL.h>
 
@@ -16,6 +17,7 @@ typedef struct{
 	// NOTE: Change var type if there's issues between 32/64 systems.
 	int window_height;
 	int window_width;
+	int scale;
 	SDL_WindowFlags flags;
 }config_t;
 
@@ -28,10 +30,10 @@ bool init_SDL(sdl_t *sdl, const config_t *config){
 
 	// Create an application window with the following settings:
 	sdl->window = SDL_CreateWindow(
-			"CHIP-8",			// window title
-			config->window_width,           // width, in pixels
-			config->window_height,          // height, in pixels
-			config->flags                  	// flags - see init_config function
+			"CHIP-8",				// window title
+			config->window_width * config->scale,    // width, in pixels
+			config->window_height * config->scale,   // height, in pixels
+			config->flags                  		// flags - see init_config function
 			);
 
 	// Check that the window was successfully created
@@ -75,8 +77,9 @@ bool init_config(config_t *config, int argc, char **argv){
 
 	// If there are no additional args, we assume default config
 	if(argc == 1){
-		config->window_height = 480;
-		config->window_width = 840;	
+		config->window_height = 32;
+		config->window_width = 64;
+		config->scale = 20;	
 		return true;
 	}
 
@@ -135,7 +138,7 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}	
 
-	SDL_SetRenderDrawColor(sdl.renderer,r,g,b,a)
+	// SDL_SetRenderDrawColor(sdl.renderer,r,g,b,a)
 	SDL_RenderClear(sdl.renderer);
 
 	bool done = false;
