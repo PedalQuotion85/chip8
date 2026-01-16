@@ -18,8 +18,8 @@ typedef struct{
 	int window_height;	// Default value is 32 pixel
 	int window_width;	// Default value is 64 pixel
 	int scale;		// Default scale is 20x, so default res is 1280 x 640
-	uint32_t bg_color;
-	uint32_t fg_color;
+	uint32_t bg_color;	// RGBA values of type Uint8
+	uint32_t fg_color;	// RGBA values of type Uint8
 	SDL_WindowFlags flags;	// SDL window config flags
 }config_t;
 
@@ -63,6 +63,12 @@ void chip8_cleanup(sdl_t *sdl){
 
 bool init_config(config_t *config, int argc, char **argv){
 
+	// If something somehow goes wrong
+	if(!config){
+		printf("ERROR: Config Initialization Failure!");
+		return false;
+	}
+
 	bool height_flag = false;
 	bool width_flag = false;
 
@@ -72,22 +78,19 @@ bool init_config(config_t *config, int argc, char **argv){
 		"   -h   Set height of the display window\n"
 		"   -w   Set width of the display window\n";
 
-	// If something somehow goes wrong
-	if(!config){
-		printf("ERROR: Config Initialization Failure!");
-		return false;
-	}
-
 	config->flags = 
 		SDL_WINDOW_OPENGL |
 		SDL_WINDOW_RESIZABLE |
 		SDL_WINDOW_ALWAYS_ON_TOP;
-
+	
+	// === DEFAULT CONFIG ===
 	// If there are no additional args, we assume default config
 	if(argc == 1){
 		config->window_height = 32;
 		config->window_width = 64;
 		config->scale = 20;	
+		config->bg_color = 0x0000FF00;
+		config->fg_color = 0xFFFFFFFF;
 		return true;
 	}
 
