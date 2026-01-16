@@ -71,6 +71,7 @@ bool init_config(config_t *config, int argc, char **argv){
 
 	bool height_flag = false;
 	bool width_flag = false;
+	bool scale_flag = fa	
 
 	const char *err_msg = "Invalid Arguments!\n"
 		"Expected two arguments (any order): -h <height> -w <width>\n"

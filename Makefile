@@ -25,3 +25,5 @@ $(TARGET): $(SRC)
 
 start: $(TARGET)
 	$(START)
+
+nc: $(TARGET)
