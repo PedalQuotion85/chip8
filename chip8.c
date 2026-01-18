@@ -92,7 +92,7 @@ bool init_config(config_t *config, const int argc, char **argv){
 		config->window_height = 32;
 		config->window_width = 64;
 		config->scale = 20;	
-		config->bg_color = 0x0000FF00;
+		config->bg_color = 0x0000FFFF;
 		config->fg_color = 0xFFFFFFFF;
 		return true;
 	}
@@ -126,7 +126,7 @@ bool init_config(config_t *config, const int argc, char **argv){
 	return true;
 }
 
-void chip8_screen_clear(const sdl_t sdl, const config_t config){
+void chip8_clear_screen(const sdl_t sdl, const config_t config){
 	// right shift to get the correct color then mask by 0xFF
 	// to ensure uint8
 	const uint8_t r = (config.bg_color >> 24) & 0xFF;
@@ -136,6 +136,11 @@ void chip8_screen_clear(const sdl_t sdl, const config_t config){
 
 	SDL_SetRenderDrawColor(sdl.renderer, r, g, b, a);
 	SDL_RenderClear(sdl.renderer);
+}
+
+void chip8_update_screen(const sdl_t sdl){
+
+	SDL_RenderPresent(sdl.renderer);
 
 }
 
@@ -159,15 +164,14 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}	
 
-	// SDL_SetRenderDrawColor(sdl.renderer,r,g,b,a)
-	SDL_RenderClear(sdl.renderer);
+	chip8_clear_screen(sdl, config);
 
 	bool done = false;
 
 	while (!done) {
 		SDL_Event event;
 		SDL_zero(event);
-		
+
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_EVENT_QUIT) {
 				done = true;
@@ -180,7 +184,9 @@ int main(int argc, char **argv){
 				}
 			}
 		}
-
+		// chip8_clear_screen(sdl, config);
+		SDL_Delay(17);
+		chip8_update_screen(sdl);
 	}
 
 	// Clean up
