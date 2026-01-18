@@ -58,20 +58,22 @@ void chip8_cleanup(sdl_t *sdl){
 	SDL_DestroyRenderer(sdl->renderer);
 	SDL_DestroyWindow(sdl->window);
 	SDL_Quit(); // Exits SDL subsystem
-
 }
 
-bool init_config(config_t *config, int argc, char **argv){
+bool init_config(config_t *config, const int argc, char **argv){
 
 	// If something somehow goes wrong
 	if(!config){
 		printf("ERROR: Config Initialization Failure!");
 		return false;
 	}
-
+	
+	// TODO: rewrite this config check system later.
+	// The flags are to ensure no double of a flag is entered
 	bool height_flag = false;
 	bool width_flag = false;
-	bool scale_flag = fa	
+	bool scale_flag = false;
+	int flag_count = 3;
 
 	const char *err_msg = "Invalid Arguments!\n"
 		"Expected two arguments (any order): -h <height> -w <width>\n"
@@ -95,7 +97,7 @@ bool init_config(config_t *config, int argc, char **argv){
 		return true;
 	}
 
-	if(argc != 5){
+	if(argc != ((flag_count * 2) + 1)){
 		printf("%s", err_msg);
 		return false;
 	}
@@ -109,15 +111,32 @@ bool init_config(config_t *config, int argc, char **argv){
 			config->window_width = atoi(argv[i + 1]);
 			width_flag = true;
 		}
+		if(strcmp(argv[i], "-s") == 0){
+			config->scale = atoi(argv[i + 1]);
+			scale_flag = true;
+		}
 	}
 
 	// Ensures that no double of a flag is entered
-	if(height_flag == false || width_flag == false){
+	if(height_flag == false || width_flag == false || scale_flag == false){
 		printf("%s", err_msg);	
 		return false;
 	}
 
 	return true;
+}
+
+void chip8_screen_clear(const sdl_t sdl, const config_t config){
+	// right shift to get the correct color then mask by 0xFF
+	// to ensure uint8
+	const uint8_t r = (config.bg_color >> 24) & 0xFF;
+	const uint8_t g = (config.bg_color >> 16) & 0xFF;
+	const uint8_t b = (config.bg_color >> 8) & 0xFF;
+	const uint8_t a = (config.bg_color >> 0) & 0xFF;
+
+	SDL_SetRenderDrawColor(sdl.renderer, r, g, b, a);
+	SDL_RenderClear(sdl.renderer);
+
 }
 
 void app(void){
@@ -148,7 +167,7 @@ int main(int argc, char **argv){
 	while (!done) {
 		SDL_Event event;
 		SDL_zero(event);
-
+		
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_EVENT_QUIT) {
 				done = true;
