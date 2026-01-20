@@ -185,7 +185,7 @@ int main(int argc, char **argv){
 			}
 		}
 		// chip8_clear_screen(sdl, config);
-		SDL_Delay(17);
+		SDL_Delay(16);
 		chip8_update_screen(sdl);
 	}
 
