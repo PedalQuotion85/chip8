@@ -7,6 +7,7 @@ chip8
 *.out
 *.bin
 SDL3-devel-*/
+.DS_store
 
 # Vim swap and backup files
 *.swp

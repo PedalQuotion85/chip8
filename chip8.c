@@ -167,7 +167,8 @@ int main(int argc, char **argv){
 	chip8_clear_screen(sdl, config);
 
 	bool done = false;
-
+	
+	// TODO: Add nuklear here
 	while (!done) {
 		SDL_Event event;
 		SDL_zero(event);
@@ -184,7 +185,7 @@ int main(int argc, char **argv){
 				}
 			}
 		}
-		// chip8_clear_screen(sdl, config);
+		chip8_clear_screen(sdl, config);
 		SDL_Delay(16);
 		chip8_update_screen(sdl);
 	}
