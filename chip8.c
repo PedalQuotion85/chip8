@@ -76,10 +76,13 @@ bool init_config(config_t *config, const int argc, char **argv){
 	int flag_count = 3;
 
 	const char *err_msg = "Invalid Arguments!\n"
-		"Expected two arguments (any order): -h <height> -w <width>\n"
+		"Expected three arguments (any order): -h <height> -w <width> -s <scale>\n"
 		"Flags:\n"
 		"   -h   Set height of the display window\n"
-		"   -w   Set width of the display window\n";
+		"   -w   Set width of the display window\n"
+		"   -s   Set scale of the application (default 20)\n"
+		"=================================================\n"
+		"Note: Default arguments will be used if no arguments are supplied!\n";
 
 	config->flags = 
 		SDL_WINDOW_OPENGL |
